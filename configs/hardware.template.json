@@ -1,0 +1,9 @@
+{
+  "robot_ip": "SET_ROBOT_FCI_IP",
+  "robot_model": "fr3",
+  "flange_to_tcp": [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+  "load_mass": 0.0,
+  "load_com": [0.0, 0.0, 0.0],
+  "load_inertia": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+  "calibration_confirmed": false
+}

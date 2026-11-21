@@ -1,0 +1,89 @@
+{
+  "schema": "fcc-wrench-observer-v1",
+  "q_reference": [
+    -0.09045059760505694,
+    -0.39973398521924286,
+    0.07623062593327937,
+    -1.8974516707272844,
+    0.03439007986291762,
+    1.5007422594332227,
+    -0.013999479971518526
+  ],
+  "resistance_gain": [
+    0.40240443301700113,
+    0.41793810833272155,
+    0.3131093383227158,
+    0.2829462412409292,
+    0.4943424666480549,
+    0.2263330767053645,
+    0.42388430593925464
+  ],
+  "joint_offset": [
+    -0.0394968215543528,
+    -0.02635902427722115,
+    -0.04435273689546326,
+    0.3151192533227305,
+    0.023448834481767676,
+    -0.07213546385835379,
+    0.028467758198608854
+  ],
+  "joint_position_slope": [
+    -0.9194805101999356,
+    0.4986084514510444,
+    0.8547462993156943,
+    0.6970926094911016,
+    1.5798247040295579,
+    0.6077018422602347,
+    0.07364106189640254
+  ],
+  "time_constant_s": 0.24,
+  "sample_dt_fit_s": 0.02,
+  "rotation_scale": 0.2,
+  "minimum_singular_value": 0.05,
+  "nominal_contact_gain": 1.0,
+  "contact_gain_status": "assumed; no known-load/contact calibration",
+  "scope": "Local low-speed approximation of Franka reported wrench; not true-force calibration",
+  "time_constant_meaning": "effective free-space telemetry lag, not an identified proprietary filter or actuator delay",
+  "canonical_convention": "base axes, about configured TCP, robot-on-environment",
+  "raw_sdk_convention_observed": "base-origin spatial moment = TCP moment + p cross force",
+  "home_model_sha256": {
+    "urdf": "6ab490843ac8e4abc50d4e0326103dc1a875770b54b66d239599eba6b3b1041d",
+    "hardware_settings": "90f5a38f5dafc1f52620c800f79e6b31771e32078b7df640a6a48261a396b970"
+  },
+  "joint_min_rad": [
+    -0.09323421841387432,
+    -0.4306220755829564,
+    0.040287979020353484,
+    -1.9498220897498948,
+    0.018602882270942513,
+    1.4589458517400296,
+    -0.04219357222682529
+  ],
+  "joint_max_rad": [
+    -0.08623572359065693,
+    -0.34191306436504554,
+    0.12156145217327037,
+    -1.831714677043204,
+    0.05445849999681224,
+    1.520263123544029,
+    0.028716302548463364
+  ],
+  "training_trace_sha256": [
+    "ff35e75f7a88be6b9cf4ed1c49ee94eb92d92ce12fa020ecd0761df930bb2e13",
+    "2a12f204cb7e3930ac12b40cda10a23cb3db9e5a2c6605e5b5c2450082318318"
+  ],
+  "at_parameter_bound": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "approximate_tolerance": {
+    "relative": 0.3,
+    "force_absolute_floor_N": 0.5,
+    "moment_absolute_floor_Nm": 0.1
+  }
+}

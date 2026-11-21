@@ -1,0 +1,21 @@
+{
+  "profile": "robotiq_2f85_single_standard_coupling",
+  "configuration_basis": "manufacturer_nominal",
+  "physically_calibrated": false,
+  "source": "https://blog.robotiq.com/hubfs/support-files/2F-85_2F-140_General_PDF_20210623.pdf",
+  "source_section": "5.2.3",
+  "tool_mass_kg": 0.921,
+  "tool_com_m": [0.0, 0.0, 0.060],
+  "tcp_translation_m": [0.0, 0.0, 0.174],
+  "published_inertia_kg_m2_column_major": [0.00418, 0.0, 0.0, 0.0, 0.00508, 0.0, 0.0, 0.0, 0.00125],
+  "published_inertia_configuration": "fingers fully open",
+  "published_inertia_reference_point": "not explicitly identified in the cited gripper section; reconcile with robot-reported COM inertia before import",
+  "coupling_included": true,
+  "assumptions": [
+    "Single standard 2F-85 with standard fingertips and coupling directly mounted to the Franka flange",
+    "No wrist camera, force sensor, tool changer, extra spacer or carried object",
+    "TCP coordinate axes will be defined parallel to the flange axes",
+    "Manufacturer values are nominal and are not measurements of this installation"
+  ],
+  "application_note": "Reference data, not an FCC hardware configuration. Read Desk end-effector and additional-load settings before allocating any mass to load_mass; do not double-count the tool."
+}

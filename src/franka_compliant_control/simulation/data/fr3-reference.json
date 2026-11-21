@@ -1,0 +1,290 @@
+{
+  "schema": "fcc-twin-home-v1",
+  "home": {
+    "position": [
+      0.40962502360343933,
+      0.008389323018491268,
+      0.4749157726764679
+    ],
+    "quaternion_xyzw": [
+      0.9999883718408398,
+      -0.004041744553260061,
+      -0.002270418053809194,
+      -0.0013287911550243228
+    ],
+    "joints": [
+      -0.08703996241092682,
+      -0.4306895136833191,
+      0.0785987600684166,
+      -1.949522852897644,
+      0.03544574975967407,
+      1.5154658555984497,
+      -0.005704674869775772
+    ]
+  },
+  "controller_config": {
+    "robot_model": "fr3",
+    "compliance_mode": "auto",
+    "motion_limit_policy": "franka",
+    "bounded_cartesian_spring": false,
+    "osc_translation_kp": [
+      25.0,
+      25.0,
+      25.0
+    ],
+    "osc_translation_kd": [
+      10.0,
+      10.0,
+      10.0
+    ],
+    "osc_rotation_kp": [
+      25.0,
+      25.0,
+      25.0
+    ],
+    "osc_rotation_kd": [
+      10.0,
+      10.0,
+      10.0
+    ],
+    "osc_translation_stiffness": [
+      400.0,
+      400.0,
+      400.0
+    ],
+    "osc_translation_damping": [
+      40.0,
+      40.0,
+      40.0
+    ],
+    "osc_rotation_stiffness": [
+      91.67324722093171,
+      91.67324722093171,
+      91.67324722093171
+    ],
+    "osc_rotation_damping": [
+      8.0,
+      8.0,
+      8.0
+    ],
+    "osc_regularization": 0.02,
+    "effort_limit_policy": "mode_bounded",
+    "osc_feedback_mode": "saturated",
+    "progressive_position_soft_radius": 0.01,
+    "progressive_position_saturation_radius": 0.1,
+    "progressive_rotation_soft_radius": 0.05235987755982989,
+    "progressive_rotation_saturation_radius": 0.3490658503988659,
+    "progressive_translation_soft_stiffness": 50.0,
+    "progressive_rotation_soft_stiffness": 3.0,
+    "collision_policy": "robot_configured",
+    "translation_stiffness": [
+      400.0,
+      400.0,
+      400.0
+    ],
+    "rotation_stiffness": [
+      15.0,
+      15.0,
+      15.0
+    ],
+    "translation_damping": [
+      40.0,
+      40.0,
+      40.0
+    ],
+    "rotation_damping": [
+      5.0,
+      5.0,
+      5.0
+    ],
+    "joint_stiffness": [
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      50.0,
+      50.0,
+      30.0
+    ],
+    "joint_damping": [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      5.0,
+      5.0,
+      3.0
+    ],
+    "joint_feedback_torque_limits": [
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      3.0,
+      3.0,
+      3.0
+    ],
+    "stop_damping": [
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0,
+      12.0
+    ],
+    "joint_lower": [
+      -2.9007,
+      -1.8361,
+      -2.9007,
+      -3.077,
+      -2.8763,
+      0.4398,
+      -3.0508
+    ],
+    "joint_upper": [
+      2.9007,
+      1.8361,
+      2.9007,
+      -0.1169,
+      2.8763,
+      4.6216,
+      3.0508
+    ],
+    "torque_limits": [
+      87.0,
+      87.0,
+      87.0,
+      87.0,
+      12.0,
+      12.0,
+      12.0
+    ],
+    "external_torque_limits": [
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      8.0,
+      8.0,
+      8.0
+    ],
+    "commanded_force_limit": 20.0,
+    "commanded_moment_limit": 8.0,
+    "contact_force_soft": 15.0,
+    "contact_force_stop": 40.0,
+    "contact_moment_soft": 3.0,
+    "contact_moment_stop": 20.0,
+    "translation_velocity": 3.0,
+    "translation_acceleration": 9.0,
+    "translation_jerk": 4500.0,
+    "rotation_velocity": 2.5,
+    "rotation_acceleration": 17.0,
+    "rotation_jerk": 8500.0,
+    "joint_velocity": 2.62,
+    "joint_acceleration": 10.0,
+    "joint_jerk": 5000.0,
+    "measured_translation_velocity_limit": 3.0,
+    "measured_rotation_velocity_limit": 2.5,
+    "measured_joint_velocity_limit": 0.0,
+    "measured_joint_velocity_limits": [
+      2.62,
+      2.62,
+      2.62,
+      2.62,
+      5.26,
+      4.18,
+      5.26
+    ],
+    "position_error_limit": 0.03,
+    "rotation_error_limit": 0.15,
+    "joint_error_limit": 0.15,
+    "posture_stiffness": 0.0,
+    "posture_damping": 2.0,
+    "nullspace_torque_limit": 2.0,
+    "torque_rate_limit": 1000.0,
+    "command_timeout": 30.0,
+    "stop_velocity": 0.02,
+    "stop_settle_time": 0.1,
+    "stop_timeout": 2.0,
+    "joint_limit_margin": 0.0,
+    "minimum_singular_value": 0.02,
+    "jacobian_rotation_scale": 0.2,
+    "maximum_control_period": 0.01
+  },
+  "hardware_settings": {
+    "robot_ip": "offline.invalid",
+    "robot_model": "fr3",
+    "flange_to_tcp": [
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.174,
+      1.0
+    ],
+    "load_mass": 0.0,
+    "load_com": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "load_inertia": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "read_only": true,
+    "calibration_confirmed": false,
+    "configuration_basis": "estimated",
+    "configuration_source": "Recorded estimated wrist assembly; simulation reference, not a deployment configuration",
+    "expected_end_effector": {
+      "mass": 1.26,
+      "com": [
+        -0.019,
+        -0.001,
+        0.035
+      ],
+      "inertia": [
+        0.004965866,
+        -5.985e-05,
+        -0.0013167,
+        -5.985e-05,
+        0.006480866,
+        -6.93e-05,
+        -0.0013167,
+        -6.93e-05,
+        0.002374416
+      ]
+    }
+  },
+  "urdf": "<?xml version=\"1.0\" ?>\n<!-- =================================================================================== -->\n<!-- |    This document was autogenerated by xacro from /workspaces/src/franka_description/robots/fr3/fr3.urdf.xacro | -->\n<!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->\n<!-- =================================================================================== -->\n<robot name=\"fr3\">\n  <!-- safety_distance: Minimum safety distance in [m] by which the collision volumes are expanded and which is enforced during robot motions -->\n  <!-- arm_id: Namespace of the robot arm. Serves to differentiate between arms in case of multiple instances. -->\n  <!-- joint_limits: description of the joint limits that comes from a YAML file. Example definition: ${xacro.load_yaml('$(find franka_description)/robots/fr3/joint_limits.yaml')} -->\n  <!-- kinematics: description of the kinematics that comes from a YAML file. Example definition: ${xacro.load_yaml('$(find franka_description)/robots/fr3/kinematics.yaml')} -->\n  <!-- inertials: description of the inertials that comes from a YAML file. Example definition: ${xacro.load_yaml('$(find franka_description)/robots/fr3/inertials.yaml')} -->\n  <!-- dynamics: description of the dynamics that comes from a YAML file. Example definition: ${xacro.load_yaml('$(find franka_description)/robots/fr3/dynamics.yaml')} -->\n  <link name=\"base\">\n      </link>\n  <joint name=\"base_joint\" type=\"fixed\">\n    <parent link=\"base\"/>\n    <child link=\"link0\"/>\n    <origin rpy=\"0 0 0\" xyz=\"0 0 0\"/>\n  </joint>\n  <!-- sub-link defining detailed meshes for collision with environment -->\n  <link name=\"link0\">\n    <visual name=\"link0_visual\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/visual/link0.dae\"/>\n      </geometry>\n    </visual>\n    <collision name=\"link0_collision\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/collision/link0.stl\"/>\n      </geometry>\n    </collision>\n    <inertial>\n      <origin rpy=\"0 0 0\" xyz=\"-0.0172 0.0004 0.0745\"/>\n      <mass value=\"2.3966\"/>\n      <inertia ixx=\"0.009\" ixy=\"0.0\" ixz=\"0.002\" iyy=\"0.0115\" iyz=\"0.0\" izz=\"0.0085\"/>\n    </inertial>\n  </link>\n  <link name=\"link0_accelerometer_top\">\n      </link>\n  <joint name=\"link0_accelerometer_top_joint\" type=\"fixed\">\n    <origin rpy=\"3.14159 0 0\" xyz=\"0 0 0.05\"/>\n    <parent link=\"link0\"/>\n    <child link=\"link0_accelerometer_top\"/>\n  </joint>\n  <link name=\"link0_accelerometer_bottom\">\n      </link>\n  <joint name=\"link0_accelerometer_bottom_joint\" type=\"fixed\">\n    <origin rpy=\"0 0 0\" xyz=\"0 0 0.06\"/>\n    <parent link=\"link0\"/>\n    <child link=\"link0_accelerometer_bottom\"/>\n  </joint>\n  <!-- sub-link defining detailed meshes for collision with environment -->\n  <link name=\"link1\">\n    <visual name=\"link1_visual\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/visual/link1.dae\"/>\n      </geometry>\n    </visual>\n    <collision name=\"link1_collision\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/collision/link1.stl\"/>\n      </geometry>\n    </collision>\n    <inertial>\n      <origin rpy=\"0 0 0\" xyz=\"0.0000004128 -0.0181251324 -0.0386035970\"/>\n      <mass value=\"2.9274653454\"/>\n      <inertia ixx=\"0.023927316485107913\" ixy=\"1.3317903455714081e-05\" ixz=\"-0.00011404774918616684\" iyy=\"0.0224821613275756\" iyz=\"-0.0019950320628240115\" izz=\"0.006350098258530016\"/>\n    </inertial>\n  </link>\n  <link name=\"link1_accelerometer_top\">\n      </link>\n  <joint name=\"link1_accelerometer_top_joint\" type=\"fixed\">\n    <origin rpy=\"1.5708 0 0\" xyz=\"0 -0.1 0.0\"/>\n    <parent link=\"link1\"/>\n    <child link=\"link1_accelerometer_top\"/>\n  </joint>\n  <link name=\"link1_accelerometer_bottom\">\n      </link>\n  <joint name=\"link1_accelerometer_bottom_joint\" type=\"fixed\">\n    <origin rpy=\"-1.5708 0 0\" xyz=\"0 -0.09 0.0\"/>\n    <parent link=\"link1\"/>\n    <child link=\"link1_accelerometer_bottom\"/>\n  </joint>\n  <joint name=\"joint1\" type=\"revolute\">\n    <origin rpy=\"0 0 0\" xyz=\"0 0 0.333\"/>\n    <parent link=\"link0\"/>\n    <child link=\"link1\"/>\n    <axis xyz=\"0 0 1\"/>\n    <limit effort=\"87.0\" lower=\"-2.9007\" upper=\"2.9007\" velocity=\"2.62\"/>\n    <safety_controller k_position=\"100.0\" k_velocity=\"40.0\" soft_lower_limit=\"-2.9007\" soft_upper_limit=\"2.9007\"/>\n    <position_based_velocity_limits deceleration_limit=\"6.0\" velocity_offset=\"0.652\"/>\n    <dynamics D=\"1\" K=\"7000\" damping=\"0.003\" friction=\"0.2\" mu_coulomb=\"0\" mu_viscous=\"16\"/>\n  </joint>\n  <!-- sub-link defining detailed meshes for collision with environment -->\n  <link name=\"link2\">\n    <visual name=\"link2_visual\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/visual/link2.dae\"/>\n      </geometry>\n    </visual>\n    <collision name=\"link2_collision\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/collision/link2.stl\"/>\n      </geometry>\n    </collision>\n    <inertial>\n      <origin rpy=\"0 0 0\" xyz=\"0.0031828864 -0.0743221644 0.0088146084\"/>\n      <mass value=\"2.9355370338\"/>\n      <inertia ixx=\"0.041938946257609425\" ixy=\"0.00020257331521090626\" ixz=\"0.004077784227179924\" iyy=\"0.02514514885014724\" iyz=\"-0.0042252158006570156\" izz=\"0.06170214472888839\"/>\n    </inertial>\n  </link>\n  <link name=\"link2_accelerometer_top\">\n      </link>\n  <joint name=\"link2_accelerometer_top_joint\" type=\"fixed\">\n    <origin rpy=\"-1.5708 0 0\" xyz=\"0 -0.13 0\"/>\n    <parent link=\"link2\"/>\n    <child link=\"link2_accelerometer_top\"/>\n  </joint>\n  <link name=\"link2_accelerometer_bottom\">\n      </link>\n  <joint name=\"link2_accelerometer_bottom_joint\" type=\"fixed\">\n    <origin rpy=\"1.5708 0 0\" xyz=\"0 -0.14 0\"/>\n    <parent link=\"link2\"/>\n    <child link=\"link2_accelerometer_bottom\"/>\n  </joint>\n  <joint name=\"joint2\" type=\"revolute\">\n    <origin rpy=\"-1.570796326794897 0 0\" xyz=\"0 0 0\"/>\n    <parent link=\"link1\"/>\n    <child link=\"link2\"/>\n    <axis xyz=\"0 0 1\"/>\n    <limit effort=\"87.0\" lower=\"-1.8361\" upper=\"1.8361\" velocity=\"2.62\"/>\n    <safety_controller k_position=\"100.0\" k_velocity=\"40.0\" soft_lower_limit=\"-1.8361\" soft_upper_limit=\"1.8361\"/>\n    <position_based_velocity_limits deceleration_limit=\"2.585\" velocity_offset=\"0.25\"/>\n    <dynamics D=\"1\" K=\"7000\" damping=\"0.003\" friction=\"0.2\" mu_coulomb=\"0\" mu_viscous=\"16\"/>\n  </joint>\n  <!-- sub-link defining detailed meshes for collision with environment -->\n  <link name=\"link3\">\n    <visual name=\"link3_visual\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/visual/link3.dae\"/>\n      </geometry>\n    </visual>\n    <collision name=\"link3_collision\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/collision/link3.stl\"/>\n      </geometry>\n    </collision>\n    <inertial>\n      <origin rpy=\"0 0 0\" xyz=\"0.0407015686 -0.0048200565 -0.0289730823\"/>\n      <mass value=\"2.2449013699\"/>\n      <inertia ixx=\"0.02410142547240885\" ixy=\"0.002404694559042109\" ixz=\"-0.002856269270114313\" iyy=\"0.01974053266708178\" iyz=\"-0.002104212683891874\" izz=\"0.019044494482244823\"/>\n    </inertial>\n  </link>\n  <link name=\"link3_accelerometer_top\">\n      </link>\n  <joint name=\"link3_accelerometer_top_joint\" type=\"fixed\">\n    <origin rpy=\"-1.5708 0 0\" xyz=\"0.0825 0.05 0\"/>\n    <parent link=\"link3\"/>\n    <child link=\"link3_accelerometer_top\"/>\n  </joint>\n  <link name=\"link3_accelerometer_bottom\">\n      </link>\n  <joint name=\"link3_accelerometer_bottom_joint\" type=\"fixed\">\n    <origin rpy=\"1.5708 0 0\" xyz=\"0.0825 0.04 0\"/>\n    <parent link=\"link3\"/>\n    <child link=\"link3_accelerometer_bottom\"/>\n  </joint>\n  <joint name=\"joint3\" type=\"revolute\">\n    <origin rpy=\"1.570796326794897 0 0\" xyz=\"0 -0.316 0\"/>\n    <parent link=\"link2\"/>\n    <child link=\"link3\"/>\n    <axis xyz=\"0 0 1\"/>\n    <limit effort=\"87.0\" lower=\"-2.9007\" upper=\"2.9007\" velocity=\"2.62\"/>\n    <safety_controller k_position=\"100.0\" k_velocity=\"40.0\" soft_lower_limit=\"-2.9007\" soft_upper_limit=\"2.9007\"/>\n    <position_based_velocity_limits deceleration_limit=\"3.5\" velocity_offset=\"0.2005\"/>\n    <dynamics D=\"1\" K=\"7000\" damping=\"0.003\" friction=\"0.2\" mu_coulomb=\"0\" mu_viscous=\"16\"/>\n  </joint>\n  <!-- sub-link defining detailed meshes for collision with environment -->\n  <link name=\"link4\">\n    <visual name=\"link4_visual\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/visual/link4.dae\"/>\n      </geometry>\n    </visual>\n    <collision name=\"link4_collision\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/collision/link4.stl\"/>\n      </geometry>\n    </collision>\n    <inertial>\n      <origin rpy=\"0 0 0\" xyz=\"-0.0459100965 0.0630492960 -0.0085187868\"/>\n      <mass value=\"2.6155955791\"/>\n      <inertia ixx=\"0.03452998321913202\" ixy=\"0.01322552265982813\" ixz=\"0.01015142998484113\" iyy=\"0.028881621933049058\" iyz=\"-0.0009762833870704552\" izz=\"0.04125471171146641\"/>\n    </inertial>\n  </link>\n  <link name=\"link4_accelerometer_top\">\n      </link>\n  <joint name=\"link4_accelerometer_top_joint\" type=\"fixed\">\n    <origin rpy=\"1.5708 0 0\" xyz=\"-0.0825 0.05 0\"/>\n    <parent link=\"link4\"/>\n    <child link=\"link4_accelerometer_top\"/>\n  </joint>\n  <link name=\"link4_accelerometer_bottom\">\n      </link>\n  <joint name=\"link4_accelerometer_bottom_joint\" type=\"fixed\">\n    <origin rpy=\"-1.5708 0 0\" xyz=\"-0.0825 0.06 0\"/>\n    <parent link=\"link4\"/>\n    <child link=\"link4_accelerometer_bottom\"/>\n  </joint>\n  <joint name=\"joint4\" type=\"revolute\">\n    <origin rpy=\"1.570796326794897 0 0\" xyz=\"0.0825 0 0\"/>\n    <parent link=\"link3\"/>\n    <child link=\"link4\"/>\n    <axis xyz=\"0 0 1\"/>\n    <limit effort=\"87.0\" lower=\"-3.077\" upper=\"-0.1169\" velocity=\"2.62\"/>\n    <safety_controller k_position=\"100.0\" k_velocity=\"40.0\" soft_lower_limit=\"-3.077\" soft_upper_limit=\"-0.1169\"/>\n    <position_based_velocity_limits deceleration_limit=\"4.0\" velocity_offset=\"0.3542\"/>\n    <dynamics D=\"1\" K=\"7000\" damping=\"0.003\" friction=\"0.2\" mu_coulomb=\"0\" mu_viscous=\"16\"/>\n  </joint>\n  <!-- sub-link defining detailed meshes for collision with environment -->\n  <link name=\"link5\">\n    <visual name=\"link5_visual\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/visual/link5.dae\"/>\n      </geometry>\n    </visual>\n    <collision name=\"link5_collision\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/collision/link5.stl\"/>\n      </geometry>\n    </collision>\n    <inertial>\n      <origin rpy=\"0 0 0\" xyz=\"-0.0016039605 0.0292536262 -0.0972965990\"/>\n      <mass value=\"2.3271207594\"/>\n      <inertia ixx=\"0.051610278463662895\" ixy=\"-0.005715173387783472\" ixz=\"-0.0035673167625872135\" iyy=\"0.04787729713371481\" iyz=\"0.010673985108535986\" izz=\"0.016423625579357254\"/>\n    </inertial>\n  </link>\n  <link name=\"link5_accelerometer_top\">\n      </link>\n  <joint name=\"link5_accelerometer_top_joint\" type=\"fixed\">\n    <origin rpy=\"-1.5708 0 0\" xyz=\"0 0.11 0\"/>\n    <parent link=\"link5\"/>\n    <child link=\"link5_accelerometer_top\"/>\n  </joint>\n  <link name=\"link5_accelerometer_bottom\">\n      </link>\n  <joint name=\"link5_accelerometer_bottom_joint\" type=\"fixed\">\n    <origin rpy=\"1.5708 0 0\" xyz=\"0 0.1 0\"/>\n    <parent link=\"link5\"/>\n    <child link=\"link5_accelerometer_bottom\"/>\n  </joint>\n  <joint name=\"joint5\" type=\"revolute\">\n    <origin rpy=\"-1.570796326794897 0 0\" xyz=\"-0.0825 0.384 0\"/>\n    <parent link=\"link4\"/>\n    <child link=\"link5\"/>\n    <axis xyz=\"0 0 1\"/>\n    <limit effort=\"12.0\" lower=\"-2.8763\" upper=\"2.8763\" velocity=\"5.26\"/>\n    <safety_controller k_position=\"100.0\" k_velocity=\"40.0\" soft_lower_limit=\"-2.8763\" soft_upper_limit=\"2.8763\"/>\n    <position_based_velocity_limits deceleration_limit=\"17.0\" velocity_offset=\"0.5738\"/>\n    <dynamics D=\"1\" K=\"7000\" damping=\"0.003\" friction=\"0.2\" mu_coulomb=\"0\" mu_viscous=\"16\"/>\n  </joint>\n  <!-- sub-link defining detailed meshes for collision with environment -->\n  <link name=\"link6\">\n    <visual name=\"link6_visual\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/visual/link6.dae\"/>\n      </geometry>\n    </visual>\n    <collision name=\"link6_collision\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/collision/link6.stl\"/>\n      </geometry>\n    </collision>\n    <inertial>\n      <origin rpy=\"0 0 0\" xyz=\"0.0597131221 -0.0410294666 -0.0101692726\"/>\n      <mass value=\"1.8170376524\"/>\n      <inertia ixx=\"0.005412333594383447\" ixy=\"0.006193456360285834\" ixz=\"0.0014219289306117652\" iyy=\"0.014058329545509979\" iyz=\"-0.0013140753741120031\" izz=\"0.016080817924212554\"/>\n    </inertial>\n  </link>\n  <joint name=\"joint6\" type=\"revolute\">\n    <origin rpy=\"1.570796326794897 0 0\" xyz=\"0 0 0\"/>\n    <parent link=\"link5\"/>\n    <child link=\"link6\"/>\n    <axis xyz=\"0 0 1\"/>\n    <limit effort=\"12.0\" lower=\"0.4398\" upper=\"4.6216\" velocity=\"4.18\"/>\n    <safety_controller k_position=\"100.0\" k_velocity=\"40.0\" soft_lower_limit=\"0.4398\" soft_upper_limit=\"4.6216\"/>\n    <position_based_velocity_limits deceleration_limit=\"5.5\" velocity_offset=\"0.4885\"/>\n    <dynamics D=\"1\" K=\"7000\" damping=\"0.003\" friction=\"0.2\" mu_coulomb=\"0\" mu_viscous=\"16\"/>\n  </joint>\n  <!-- sub-link defining detailed meshes for collision with environment -->\n  <link name=\"link7\">\n    <visual name=\"link7_visual\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/visual/link7.dae\"/>\n      </geometry>\n    </visual>\n    <collision name=\"link7_collision\">\n      <geometry>\n        <mesh filename=\"package://franka_description/meshes/robot_arms/fr3/collision/link7.stl\"/>\n      </geometry>\n    </collision>\n    <inertial>\n      <origin rpy=\"0 0 0\" xyz=\"0.0045225817 0.0086261921 -0.0161633251\"/>\n      <mass value=\"0.6271432862\"/>\n      <inertia ixx=\"0.00021092389150104718\" ixy=\"-2.433299114461931e-05\" ixz=\"4.564480393778983e-05\" iyy=\"0.00017718568002411474\" iyz=\"8.744070223226438e-05\" izz=\"5.993190599659971e-05\"/>\n    </inertial>\n  </link>\n  <joint name=\"joint7\" type=\"revolute\">\n    <origin rpy=\"1.570796326794897 0 0\" xyz=\"0.088 0 0\"/>\n    <parent link=\"link6\"/>\n    <child link=\"link7\"/>\n    <axis xyz=\"0 0 1\"/>\n    <limit effort=\"12.0\" lower=\"-3.0508\" upper=\"3.0508\" velocity=\"5.26\"/>\n    <safety_controller k_position=\"100.0\" k_velocity=\"40.0\" soft_lower_limit=\"-3.0508\" soft_upper_limit=\"3.0508\"/>\n    <position_based_velocity_limits deceleration_limit=\"17.0\" velocity_offset=\"0.4592\"/>\n    <dynamics D=\"1\" K=\"7000\" damping=\"0.003\" friction=\"0.2\" mu_coulomb=\"0\" mu_viscous=\"16\"/>\n  </joint>\n  <link name=\"link8\"/>\n  <joint name=\"joint8\" type=\"fixed\">\n    <origin rpy=\"0 0 0\" xyz=\"0 0 0.107\"/>\n    <parent link=\"link7\"/>\n    <child link=\"link8\"/>\n  </joint>\n</robot>\n",
+  "simulation_only": true,
+  "provenance": {
+    "source_context_file_sha256": "394d16ddd7b652cf976b7e2f6a61889dc9fe7c9f80c02356dea81a03d12daace",
+    "source_home_sha256": "ac1c8573298c66e7536fa626500dfad530f217b391f705d1e041328b4af92a69",
+    "note": "Same immutable pose/joints/dynamics; network/operational fields removed, read-only simulator metadata"
+  },
+  "sha256": {
+    "home": "ac1c8573298c66e7536fa626500dfad530f217b391f705d1e041328b4af92a69",
+    "controller_config": "649f6c7061ec076ad1f3719b1cd717da4c1a2bff6e96764c3ea2af04be663205",
+    "hardware_settings": "cf73435327a05d7a30f5be16d5f029928efe1f4a9ddb07698e6323ca987ff374",
+    "urdf": "6ab490843ac8e4abc50d4e0326103dc1a875770b54b66d239599eba6b3b1041d"
+  }
+}

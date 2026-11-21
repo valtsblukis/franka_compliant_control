@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "franka-compliant-control"
+version = "0.2.0"
+description = "Franka compliant controller, MuJoCo model and identification tools"
+requires-python = ">=3.11"
+dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "pydantic>=2.9,<3", "requests>=2.32,<3", "numpy>=1.26,<3"]
+
+[project.optional-dependencies]
+twin = ["mujoco==3.3.7", "matplotlib>=3.9,<4"]
+simulation = ["mujoco==3.3.7", "matplotlib>=3.9,<4"]
+sysid = ["mujoco==3.3.7", "matplotlib>=3.9,<4", "scipy>=1.15,<2"]
+dev = ["pytest>=8,<9", "httpx>=0.27,<1", "cmake>=3.24,<5", "ninja", "pybind11>=2.13,<3", "cmeel-eigen==3.4.0.2"]
+
+[project.scripts]
+franka-compliant-control = "franka_compliant_control.service:main"
+franka-sim = "franka_compliant_control.simulation.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+franka_compliant_control = ["*.so", "*.html", "_native_inputs.json", "THIRD_PARTY_NOTICES.txt"]
+"franka_compliant_control.simulation" = ["data/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

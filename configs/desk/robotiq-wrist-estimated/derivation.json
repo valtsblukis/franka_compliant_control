@@ -1,0 +1,70 @@
+{
+  "status": "provisional commissioning candidate; not applied or calibrated",
+  "survey": "Local payload survey; raw commissioning records are not distributed",
+  "survey_sha256": "0c9166128c1024d39a9377efece235dc2049d95e7c38e404cb8fd2850f180452",
+  "fitted_mass_kg": 1.2635999105114226,
+  "fitted_com_m": [
+    -0.019340009388724905,
+    -0.0014936799490943404,
+    0.03468653059975741
+  ],
+  "selected_mass_kg": 1.26,
+  "selected_com_m": [
+    -0.019,
+    -0.001,
+    0.035
+  ],
+  "baseline": "configs/desk/robotiq-2f85/endeffector-config.json",
+  "baseline_sha256": "36f1d5ef1045389c941bc327a04e89a12735a2f39df7de6914459e2b36867a78",
+  "baseline_mass_kg": 0.9,
+  "baseline_com_m": [
+    0.0,
+    0.0,
+    0.057
+  ],
+  "equivalent_extra_mass_kg": 0.36,
+  "equivalent_extra_com_m": [
+    -0.0665,
+    -0.0035,
+    -0.019999999999999997
+  ],
+  "extra_box_dimensions_m": [
+    0.1753,
+    0.0303,
+    0.0431
+  ],
+  "camera_assumption": "zed2i",
+  "camera_model_status": "ZED 2i dimensions are an example assumption, not identification of the installed camera. Verify the actual assembly before use.",
+  "camera_evidence": "Public camera dimensions only; no installation-specific calibration is distributed",
+  "dimensions_source": "https://support.stereolabs.com/hc/en-us/article_attachments/27901419901463",
+  "inertia_method": "Franka nominal gripper I_COM plus parallel-axis terms and orientation-averaged uniform-box inertia for all equivalent excess mass. Does not identify or model actual distributed cable inertia.",
+  "equivalent_extra_inertia_at_com_kg_m2": [
+    0.0006701158000000002,
+    0.0,
+    0.0,
+    0.0,
+    0.0006701158000000002,
+    0.0,
+    0.0,
+    0.0,
+    0.0006701158000000002
+  ],
+  "selected_total_inertia_at_com_kg_m2": [
+    0.004965866,
+    -5.985e-05,
+    -0.0013167,
+    -5.985e-05,
+    0.006480866,
+    -6.93e-05,
+    -0.0013167,
+    -6.93e-05,
+    0.002374416
+  ],
+  "inertia_eigenvalues_kg_m2": [
+    0.001821191972431315,
+    0.0055166278023802695,
+    0.006483328225188416
+  ],
+  "configuration_ready_for_powered_control": false,
+  "next_step": "Review candidate assumptions, import in Desk, verify readback and resting residuals before any bounded powered test"
+}

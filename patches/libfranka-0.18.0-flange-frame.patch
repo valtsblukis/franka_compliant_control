@@ -1,0 +1,38 @@
+diff --git a/src/robot_model.cpp b/src/robot_model.cpp
+index 62ad233..7dbf639 100644
+--- a/src/robot_model.cpp
++++ b/src/robot_model.cpp
+@@ -2,15 +2,30 @@
+ // Use of this source code is governed by the Apache-2.0 license, see LICENSE
+ #include "franka/robot_model.h"
+ #include <algorithm>
++#include <stdexcept>
+ 
+ namespace franka {
+ 
+ RobotModel::RobotModel(const std::string& urdf) {
+   pinocchio::urdf::buildModelFromXML(urdf, pinocchio_model_);
+ 
+-  last_joint_index_ =                       // NOLINT(cppcoreguidelines-prefer-member-initializer)
+-      pinocchio_model_.joints.back().id();  // NOLINT(cppcoreguidelines-prefer-member-initializer)
+-  last_link_frame_index_ = pinocchio_model_.getFrameId(pinocchio_model_.frames.back().name);
++  // Upstream now selects link8 explicitly. Fixed sensor branches in the FR3
++  // 5.10 URDF mean frames.back() can be a base accelerometer, not the flange.
++  // Retain the known namespaced forms used by earlier SDK test URDFs.
++  unsigned int flange_matches = 0;
++  for (const auto* name : {"link8", "fr3_link8", "fp3_link8", "panda_link8"}) {
++    if (pinocchio_model_.existFrame(name, pinocchio::BODY)) {
++      last_link_frame_index_ = pinocchio_model_.getFrameId(name, pinocchio::BODY);
++      ++flange_matches;
++    }
++  }
++  if (flange_matches != 1 || pinocchio_model_.nq != 7 || pinocchio_model_.nv != 7) {
++    throw std::runtime_error("Expected one known Franka flange link8 and seven arm joints");
++  }
++  last_joint_index_ = pinocchio_model_.frames[last_link_frame_index_].parentJoint;
++  if (last_joint_index_ != 7) {
++    throw std::runtime_error("Franka flange link8 must be attached to the seventh arm joint");
++  }
+   initial_last_link_inertia_ = pinocchio_model_.inertias[last_joint_index_];
+ 
+   cached_f_x_ctotal_.fill(-1.0);

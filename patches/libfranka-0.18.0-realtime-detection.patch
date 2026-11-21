@@ -1,0 +1,65 @@
+diff --git a/src/control_tools.cpp b/src/control_tools.cpp
+index 817f22a..1e085b4 100644
+--- a/src/control_tools.cpp
++++ b/src/control_tools.cpp
+@@ -3,6 +3,7 @@
+ #include <franka/control_tools.h>
+ 
+ #include <cstring>
++#include <cerrno>
+ #include <exception>
+ #include <fstream>
+ #include <string>
+@@ -13,6 +14,8 @@
+ #include <Windows.h>
+ #else
+ #include <pthread.h>
++#include <sstream>
++#include <sys/utsname.h>
+ #endif
+ 
+ // `using std::string_literals::operator""s` produces a GCC warning that cannot be disabled, so we
+@@ -22,14 +25,40 @@ using namespace std::string_literals;  // NOLINT(google-build-using-namespace)
+ 
+ namespace franka {
+ 
++// Local RT compatibility helper; also exercised by the isolated SDK tests.
++static bool hasRealtimeVersionFlag(const char* version) {
++  std::istringstream flags(version);
++  std::string flag;
++  while (flags >> flag) {
++    if (flag == "PREEMPT_RT") {
++      return true;
++    }
++  }
++  return false;
++}
++
+ bool hasRealtimeKernel() {
+ #ifdef LIBFRANKA_WINDOWS
+   return true;
+ #else
++  errno = 0;
+   std::ifstream realtime("/sys/kernel/realtime", std::ios_base::in);
+-  bool is_realtime{};
+-  realtime >> is_realtime;
+-  return is_realtime;
++  if (realtime.is_open()) {
++    std::string value;
++    realtime >> value;
++    return value == "1";
++  }
++  if (errno != ENOENT) {
++    return false;
++  }
++  // Local compatibility fix: modern RT kernels may omit the legacy sysfs
++  // indicator. Linux init/Makefile emits PREEMPT_RT in UTS_VERSION only when
++  // CONFIG_PREEMPT_RT is selected. Do not infer RT from the release suffix.
++  struct utsname kernel {};
++  if (uname(&kernel) != 0) {
++    return false;
++  }
++  return hasRealtimeVersionFlag(kernel.version);
+ #endif
+ }
+ 

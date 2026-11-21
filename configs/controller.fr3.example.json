@@ -1,0 +1,12 @@
+{
+  "robot_model": "fr3",
+  "translation_velocity": 0.02,
+  "translation_acceleration": 0.1,
+  "translation_jerk": 1.0,
+  "rotation_velocity": 0.1,
+  "rotation_acceleration": 0.2,
+  "rotation_jerk": 2.0,
+  "joint_velocity": 0.1,
+  "joint_acceleration": 0.2,
+  "joint_jerk": 2.0
+}

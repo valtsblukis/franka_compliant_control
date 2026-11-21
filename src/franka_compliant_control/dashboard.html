@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Franka controller status</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,sans-serif;background:#10151e;color:#e5ecf5}body{max-width:1250px;margin:auto;padding:22px}h1{font-size:1.5rem;margin:0}h2{font-size:1.05rem;margin:0 0 12px}header,.toolbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px}a{color:#8ac2ff}button,input{background:#26344a;color:inherit;border:1px solid #526786;border-radius:6px;padding:9px}button{cursor:pointer}button:disabled{opacity:.45;cursor:default}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}.card{background:#182130;border:1px solid #344158;border-radius:9px;padding:16px;margin-bottom:16px}.metric{font-size:1.5rem;font-weight:650}.muted{color:#aab8cd;font-size:.9rem}.bad{color:#ff9d9d}.warn{color:#ffd184}.good{color:#85dca9}.banner{border-left:5px solid #ffd184;padding:12px;background:#2b2830;margin-bottom:14px}table{width:100%;border-collapse:collapse;font-size:.88rem;white-space:nowrap}th,td{text-align:right;padding:9px 7px;border-bottom:1px solid #344158}th:first-child,td:first-child{text-align:left}.scroll{overflow-x:auto}.bar{height:10px;width:150px;background:#344158;position:relative;border-radius:5px;overflow:hidden}.fill{height:100%;background:#79abd9}.fill.near{background:#ffd184}.fill.outside{background:#ff8181}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.83rem;max-height:350px;overflow:auto}li{margin:7px 0}#connection{font-weight:600}code{overflow-wrap:anywhere}.small{font-size:.85rem}summary{cursor:pointer;padding:8px 0}canvas{width:100%;height:150px}label{font-size:.85rem}footer{margin-top:16px;color:#aab8cd}
+</style>
+</head>
+<body>
+<header><div><h1>Franka controller status</h1><p class="muted">Status and explicit fault recovery · no setpoint or gain controls</p></div><nav><a href="/about">About / endpoints</a> · <a href="/docs">API</a> · <a href="/urdf">URDF</a> · <a href="/state" target="_blank" rel="noopener">Full state / SDK records</a></nav></header>
+<div class="toolbar"><span id="connection">Connecting…</span><div><button id="pause">Pause display</button> <button id="read" disabled>Read robot state (inactive only)</button> <button id="save">Download diagnostics</button> <button id="auto-recovery" disabled>Automatic recovery: —</button> <button id="reset-timeout" disabled>Reset timeout to 2 s</button> <button id="recover" disabled>Recover fault…</button></div></div>
+<p class="muted">Display polls cached telemetry at 4 Hz. The read button requests one fresh observation through the existing connection; it does not arm, stop, recover, clear a fault or set robot parameters.</p>
+<div id="network" class="banner" hidden></div><div id="settings-result" class="banner" hidden></div><div id="recovery-result" class="banner" hidden></div><div id="freshness" class="banner">Waiting for a snapshot…</div>
+<p class="muted">Recovery works while the torque controller is faulted, as long as the HTTP service and robot connection are available. Pause your policy/setpoint sender first: a new setpoint after recovery can start motion. Manual recovery itself sends no target; with automatic recovery enabled, a new valid setpoint may recover and start control. Franka's recovery operation may move the robot. Keep the workspace clear and physical stop ready. Download diagnostics before clearing the fault.</p>
+<div class="grid">
+<section class="card"><h2>Controller</h2><div class="metric" id="phase">—</div><p id="running"></p><p id="mode" class="muted"></p><p id="homestatus" class="muted"></p></section>
+<section class="card"><h2>Robot observation</h2><div class="metric" id="robot">—</div><p id="age"></p><p id="source" class="muted"></p></section>
+<section class="card"><h2>Nearest joint boundary</h2><div class="metric" id="nearest">—</div><p id="boundary"></p><p class="muted">5° highlighting is diagnostic only—not an added control limit.</p></section>
+<section class="card"><h2>Command stream</h2><div id="sequence" class="metric">—</div><p class="muted">accepted / applied sequence (not “reached”)</p><p id="commandage"></p><p id="timeoutcurrent"></p><p id="timeoutrequest" class="muted"></p></section>
+</div>
+<section class="card"><h2>Observed issues / preflight clues</h2><ul id="notices"></ul><p class="muted" id="readiness"></p><h2>Last rejected request</h2><pre id="rejection">None recorded since service startup.</pre><p id="operation" class="muted"></p></section>
+<section class="card"><h2>Joint positions and directional speed limits</h2><p class="muted">Angles in radians unless marked °. Distances use configured bounds including the joint margin. Negative distance means outside the permitted interval. Values may be stale—check the banner above.</p><div class="scroll"><table><thead><tr><th>Joint</th><th>Range position</th><th>q (rad)</th><th>Joint reference</th><th>Error (rad)</th><th>dq (rad/s)</th><th>Lower</th><th>Upper</th><th>To lower (°)</th><th>To upper (°)</th><th>Allowed dq − / +</th></tr></thead><tbody id="joints"></tbody></table></div></section>
+<div class="grid"><section class="card"><h2>TCP pose and effective reference</h2><pre id="pose"></pre></section><section class="card"><h2>External and requested effort</h2><pre id="effort"></pre></section></div>
+<section class="card"><h2>Fault / stop information</h2><pre id="fault"></pre><details><summary>Robot collision-setting acknowledgement</summary><pre id="collision"></pre></details><details><summary>Compact raw snapshot</summary><pre id="raw"></pre></details></section>
+<footer>Snapshot diagnostics are not permission to arm. For a joint-limit or Reflex problem, inspect Desk and follow the robot's operator procedure. This page cannot make the arm move away from a limit. <span id="auth"></span></footer>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+let paused=false,refreshing=false,lastView=null,lastReceived=0;
+const finite=v=>typeof v==='number'&&Number.isFinite(v);
+const fmt=(v,n=3)=>finite(v)?v.toFixed(n):'—';
+const deg=v=>finite(v)?v*180/Math.PI:null;
+const text=(id,v)=>{$(id).textContent=v;};
+const json=(id,v)=>text(id,JSON.stringify(v,null,2));
+function updateAge(){
+ if(!lastView)return;
+ const s=lastView.state,age=finite(s.sample_age_s)?s.sample_age_s+(performance.now()-lastReceived)/1000:null;
+ text('age',`Observation age: ${fmt(age)} s${paused?' · display paused':''}`);
+ const stale=!s.sample_valid||!finite(age)||(s.running?(!lastView.sample_fresh||paused||performance.now()-lastReceived>1000):age>.05);
+ text('freshness',stale?'STALE / LAST OBSERVATION — not a live assertion of robot readiness. While inactive, use the explicit state-read button.':'Recent valid streaming telemetry (display polls at 4 Hz). Native preflight—not this page—decides whether arming is allowed.');
+ $('freshness').className=stale?'banner warn':'banner good';
+}
+function updateButtons(){
+ const s=lastView?.state;
+ $('read').disabled=!s||!!s.running||refreshing;
+ $('recover').disabled=!s||!!s.running||!!s.read_only||refreshing||!(s.phase==='fault'||s.robot_has_errors===true||s.robot_mode==='Reflex');
+ $('save').disabled=refreshing||!s;
+ $('auto-recovery').disabled=refreshing||!s||!!s.read_only||typeof s.automatic_recovery_enabled!=='boolean';
+ text('auto-recovery',`Automatic recovery: ${s?.automatic_recovery_enabled?'ON — turn off':'OFF — turn on'}`);
+ $('reset-timeout').disabled=refreshing||!s||!!s.running;
+}
+function render(v){
+ lastView=v;lastReceived=performance.now();const s=v.state;
+ text('phase',(s.phase||'unknown').toUpperCase());$('phase').className='metric '+(s.phase==='fault'?'bad':'');
+ text('running',`Control loop running: ${s.running} · read-only: ${s.read_only} · auto recovery on fresh setpoint: ${s.automatic_recovery_enabled??false}`);
+ text('mode',`${s.compliance_mode||''} → ${s.selected_control_law||s.compliance_mode||''} · ${s.reference_policy||''} · ${s.selected_effort_limit_policy||s.effort_limit_policy||''}`);
+ text('robot',s.robot_mode||'unavailable');
+ text('source',`Source: ${s.observation_source||'unknown'} · robot errors: ${s.robot_has_errors??'unconfirmed'}`);
+ text('sequence',`${s.accepted_seq??'—'} / ${s.applied_seq??'—'}`);
+ text('commandage',`Applied command age: ${fmt(s.command_age_s)} s`);
+ text('timeoutcurrent',`Configured streaming timeout: ${fmt(s.command_timeout_s)} s`);
+ text('homestatus',`Go home: ${s.homing_status||'none'}${s.homing_active&&finite(s.homing_deadline_s)?` · ${fmt(Math.max(0,s.homing_deadline_s-s.server_monotonic_s),1)} s remaining`:''}`);
+ const timeoutRequest=s.last_timeout_request;
+ text('timeoutrequest',timeoutRequest?`Last timeout request: ${timeoutRequest.command_timeout_s??timeoutRequest.requested_value} s · ${timeoutRequest.outcome}`:'No timeout update recorded since startup.');
+ const n=v.nearest_joint;
+ text('nearest',n?`J${n.joint}: ${fmt(n.nearest_distance_deg,2)}°`:'Unknown');
+ text('boundary',n?`${n.nearest_boundary} boundary · ${n.position_status}`:'');
+ $('nearest').className='metric '+(n&&n.position_status==='outside'?'bad':n&&n.position_status==='near'?'warn':'');
+ const notices=$('notices');notices.replaceChildren();
+ for(const notice of v.notices||[]){const li=document.createElement('li');li.textContent=notice;notices.append(li);}
+ if(!notices.childNodes.length){const li=document.createElement('li');li.textContent='No displayed issue in this snapshot. This is not a full arm preflight.';notices.append(li);}
+ text('readiness',v.readiness_note);
+ const rejected=v.last_rejection;
+ text('rejection',rejected?`${new Date(rejected.time_unix_s*1000).toLocaleString()} · ${rejected.operation}\n${rejected.error}`:'None recorded since service startup.');
+ const op=v.last_operation;text('operation',op?`Last operation: ${op.operation} · ${op.error?'rejected':'completed'} · ${new Date(op.time_unix_s*1000).toLocaleTimeString()}`:'');
+ const rows=$('joints');rows.replaceChildren();
+ for(const j of v.joints){
+  const row=document.createElement('tr');row.className=j.position_status==='outside'?'bad':j.position_status==='near'?'warn':'';
+  const cell=value=>{const td=document.createElement('td');td.textContent=value;row.append(td);return td;};
+  cell(`J${j.joint}`);const graph=cell(''),bar=document.createElement('div'),fill=document.createElement('div');
+  bar.className='bar';fill.className='fill '+j.position_status;fill.style.width=`${finite(j.fraction)?Math.max(0,Math.min(100,100*j.fraction)):0}%`;bar.append(fill);graph.append(bar);
+  cell(fmt(j.position_rad,4));cell(fmt(j.reference_position_rad,4));cell(fmt(j.tracking_error_rad,4));cell(fmt(j.velocity_rad_s,4));cell(fmt(j.lower_rad,4));cell(fmt(j.upper_rad,4));
+  cell(fmt(deg(j.lower_distance_rad),2));cell(fmt(deg(j.upper_distance_rad),2));cell(`${fmt(j.lower_velocity_rad_s)} / ${fmt(j.upper_velocity_rad_s)}`);rows.append(row);
+ }
+ json('pose',{measured_position_m:s.position,measured_quaternion_xyzw:s.quaternion_xyzw,reference_position_m:s.reference_position,reference_quaternion_xyzw:s.reference_quaternion_xyzw,twist:s.twist});
+ json('effort',{external_wrench_base:s.external_wrench,external_wrench_stiffness:s.external_wrench_stiffness,external_joint_torques:s.external_joint_torques,commanded_task_wrench:s.commanded_task_wrench,commanded_joint_torques:s.commanded_joint_torques,joint_spring_torques:s.joint_spring_torques,joint_feedback_torques:s.joint_feedback_torques,joint_spring_limited:s.joint_spring_limited,joint_feedback_limited:s.joint_feedback_limited,spring_cap:[s.progressive_force_saturated,s.progressive_moment_saturated],torque_slew_limited:s.joint_torque_limited});
+ json('fault',{reason:s.reason,first_stop_trigger:s.stop_trigger,error:s.error,last_recovery:s.last_recovery,...v.fault_summary});
+ json('collision',s.robot_collision_settings);json('raw',v);text('auth',v.authentication_enabled?'API authentication enabled.':'HTTP authentication is disabled; use a trusted robot network.');
+ updateButtons();updateAge();
+}
+async function request(path,method='GET',timeoutMs=4000,body=undefined){
+ const abort=new AbortController(),timeout=setTimeout(()=>abort.abort(),timeoutMs);
+ const options={method,cache:'no-store',signal:abort.signal};
+ if(body!==undefined){options.headers={'Content-Type':'application/json'};options.body=JSON.stringify(body);}
+ try{const response=await fetch(path,options);const data=await response.json();if(!response.ok)throw new Error(`${response.status}: ${typeof data.detail==='string'?data.detail:JSON.stringify(data.detail)}`);return data;}
+ finally{clearTimeout(timeout);}
+}
+async function poll(){
+ if(!paused&&!refreshing){try{
+  const view=await request('/status');
+  if(!finite(view.state.command_timeout_s)){const timeout=await request('/command_timeout');view.state.command_timeout_s=timeout.command_timeout_s;}
+  render(view);text('connection','Service reachable · display only');$('network').hidden=true;}
+ catch(e){text('connection','Status unavailable');$('network').hidden=false;text('network',`${e.message}. Displayed values are retained history, not fresh state. If the service is unreachable, recovery cannot be sent; inspect the server terminal or Desk.`);$('read').disabled=true;$('recover').disabled=true;$('auto-recovery').disabled=true;$('reset-timeout').disabled=true;}}
+ setTimeout(poll,250);
+}
+$('pause').onclick=()=>{paused=!paused;text('pause',paused?'Resume display':'Pause display');updateAge();};
+$('read').onclick=async()=>{
+ refreshing=true;updateButtons();text('connection','Reading inactive state (no motion)…');
+ try{await request('/state/refresh','POST');render(await request('/status'));$('network').hidden=true;}
+ catch(e){$('network').hidden=false;text('network',`State read failed: ${e.message}. No arm/recovery was requested.`);}
+ finally{refreshing=false;updateButtons();}
+};
+$('save').onclick=async()=>{
+ try{
+  const state=await request('/state');
+  const blob=new Blob([JSON.stringify({saved_at:new Date().toISOString(),state,status:lastView},null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;
+  link.download=`franka-diagnostics-${new Date().toISOString().replaceAll(':','-')}.json`;
+  link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ }catch(e){$('network').hidden=false;text('network',`Could not download diagnostics: ${e.message}`);}
+};
+$('auto-recovery').onclick=async()=>{
+ if($('auto-recovery').disabled)return;
+ const enabled=!lastView.state.automatic_recovery_enabled;
+ if(enabled&&!window.confirm('Enable automatic recovery for future setpoints?\nA fresh setpoint after an eligible fault can recover the robot and start control. Keep the workspace clear and the physical stop ready.'))return;
+ refreshing=true;updateButtons();$('settings-result').hidden=false;
+ try{
+  const result=await request('/automatic_recovery','POST',4000,{enabled});
+  lastView.state.automatic_recovery_enabled=result.enabled;
+  text('settings-result',`Automatic recovery is now ${result.enabled?'ON':'OFF'} for future attempts. No recovery or motion command was sent.`);
+ }catch(e){text('settings-result',`Recovery setting not confirmed: ${e.message}. Reload status; restart an older server if the route is missing.`);}
+ finally{refreshing=false;updateButtons();}
+};
+$('reset-timeout').onclick=async()=>{
+ if($('reset-timeout').disabled)return;
+ refreshing=true;updateButtons();$('settings-result').hidden=false;
+ try{
+  const result=await request('/command_timeout/reset','POST');
+  lastView.state.command_timeout_s=result.command_timeout_s;
+  text('timeoutcurrent',`Configured streaming timeout: ${fmt(result.command_timeout_s)} s`);
+  text('settings-result',`Streaming timeout reset to ${result.command_timeout_s} seconds. No control or recovery was started.`);
+ }catch(e){text('settings-result',`Timeout reset not confirmed: ${e.message}. The controller must be inactive; restart an older server if the route is missing.`);}
+ finally{refreshing=false;updateButtons();}
+};
+$('recover').onclick=async()=>{
+ if($('recover').disabled)return;
+ if(!window.confirm('Recover the controller/robot fault?\n\nPause the policy/setpoint sender first. A new setpoint after recovery can start motion.\nFranka recovery may move the robot: clear the workspace and keep the physical stop ready.\nDownload diagnostics first if needed; recovery clears the active fault record.'))return;
+ refreshing=true;updateButtons();$('recovery-result').hidden=false;
+ text('recovery-result','Recovery requested; waiting for acknowledgement. No target is being sent.');
+ try{
+  const s=await request('/recover','POST',30000);
+  text('recovery-result',`Recovery acknowledged: controller=${s.phase}, running=${s.running}, observed robot=${s.robot_mode}. No target was replayed. Keep the producer paused until ready.`);
+  render(await request('/status'));
+ }catch(e){text('recovery-result',`Recovery not confirmed: ${e.message}. No automatic retry. Inspect current status and Desk; do not assume a timeout means the recovery did not execute.`);}
+ finally{refreshing=false;updateButtons();}
+};
+setInterval(updateAge,250);poll();
+</script>
+</body>
+</html>
